@@ -1,5 +1,8 @@
 "use client";
 
+import Image from 'next/image';
+import Link from 'next/link';
+
 export default function LandingPage() {
   // Sample banner data
   const banners = [
@@ -42,22 +45,23 @@ export default function LandingPage() {
             className="relative overflow-hidden rounded-xl shadow-lg group h-80 flex flex-col"
           >
             {/* Background Image */}
-            <img
+            <Image
               src={banner.image}
               alt={banner.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              layout="fill"
+              objectFit="cover"
+              className="transition-transform duration-300 group-hover:scale-105"
             />
             
             {/* Overlay for Text */}
             <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-6 text-white">
               <h2 className="text-lg font-bold mb-2 leading-tight">{banner.title}</h2>
               <p className="text-sm mb-4 leading-snug">{banner.description}</p>
-              <a
-                href={banner.link}
-                className="inline-block bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full text-center transition-transform transform hover:scale-105"
-              >
-                {banner.buttonText}
-              </a>
+              <Link href={banner.link} passHref>
+                <a className="inline-block bg-yellow-500 text-black font-semibold py-2 px-4 rounded-full text-center transition-transform transform hover:scale-105">
+                  {banner.buttonText}
+                </a>
+              </Link>
             </div>
           </div>
         ))}

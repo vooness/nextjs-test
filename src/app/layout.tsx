@@ -1,10 +1,11 @@
 "use client";
 
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { useState } from "react";
 import { Search, ShoppingCart, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -74,7 +75,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-20">
                 <div className="flex-shrink-0 ml-8">
-                  <a href="/" className="text-2xl font-bold text-white">Království Zdraví</a>
+                  <Link href="/">
+                    <a className="text-2xl font-bold text-white">Království Zdraví</a>
+                  </Link>
                 </div>
                 <div className="flex justify-center flex-1">
                   {navLinks.map((link, index) => (
@@ -100,7 +103,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                             <h2 className="text-2xl text-yellow-400">{link.slogan}</h2>
                           </div>
                           <div className="grid grid-cols-12 gap-8 text-white">
-                            {/* Left section: Quick Links */}
                             <div className="col-span-3 border-r border-yellow-500/30">
                               <h3 className="text-lg mb-4 text-yellow-400">Kategorie</h3>
                               <ul className="space-y-2">
@@ -113,30 +115,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
                                 ))}
                               </ul>
                             </div>
-
-                            {/* Right section: Specialized links */}
-                            <div className="col-span-3 border-r border-yellow-500/30">
-                              <h3 className="text-lg mb-4 text-yellow-400">Rychlá Navigace</h3>
-                              <ul className="space-y-2">
-                                {link.specialized && link.specialized.map((item, idx) => (
-                                  <li key={idx}>
-                                    <a href="#" className="hover:text-yellow-400 transition-colors">
-                                      {item}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            {/* Rightmost section: Featured Items */}
                             <div className="col-span-6">
                               <h3 className="text-lg mb-4 text-yellow-400">Doporučujeme</h3>
                               <div className="grid grid-cols-2 gap-6">
                                 {link.featured.map((item, idx) => (
                                   <div key={idx} className="relative overflow-hidden rounded-lg shadow-lg">
-                                    <img
+                                    <Image
                                       src={item.image}
                                       alt={item.name}
+                                      width={200}
+                                      height={200}
                                       className="w-full h-40 object-cover transition-transform duration-300 hover:scale-110"
                                     />
                                     <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#bc25a4] to-transparent p-4">
@@ -164,65 +152,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Mobile Menu */}
-          <div className="lg:hidden">
-            <div className="flex items-center justify-between px-4 h-16 bg-[#bc25a4]">
-              <button onClick={() => setIsOpen(!isOpen)} className="text-white">
-                <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
-                  <span className={`block h-0.5 w-6 bg-yellow-400 transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-                  <span className={`block h-0.5 w-6 bg-yellow-400 ${isOpen ? 'opacity-0' : ''}`}></span>
-                  <span className={`block h-0.5 w-6 bg-yellow-400 transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-                </div>
-              </button>
-
-              <div className="flex-1 text-center">
-                <a href="/" className="text-2xl font-bold text-white">Království Zdraví</a>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <Search className="w-5 h-5 text-yellow-400" />
-                <ShoppingCart className="w-5 h-5 text-yellow-400" />
-              </div>
-            </div>
-
-            {isOpen && (
-              <div className="bg-[#bc25a4] text-white py-4 space-y-4">
-                {navLinks.map((link, index) => (
-                  <div key={index} className="px-4">
-                    <button onClick={() => setActiveDropdown(activeDropdown === index ? null : index)} className="flex items-center w-full text-left">
-                      <span className="text-sm uppercase">{link.title}</span>
-                      <ChevronDown className={`w-4 h-4 ml-auto transform ${activeDropdown === index ? 'rotate-180' : ''}`} />
-                    </button>
-                    {activeDropdown === index && (
-                      <div className="mt-2 space-y-2">
-                        <h3 className="text-yellow-400">Kategorie</h3>
-                        <ul className="space-y-1">
-                          {link.quickLinks.map((item, idx) => (
-                            <li key={idx}>
-                              <a href="#" className="block pl-4 text-white hover:text-yellow-400">
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                        <h3 className="text-yellow-400 mt-4">Rychlá Navigace</h3>
-                        <ul className="space-y-1">
-                          {link.specialized && link.specialized.map((item, idx) => (
-                            <li key={idx}>
-                              <a href="#" className="block pl-4 text-white hover:text-yellow-400">
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </nav>
 
