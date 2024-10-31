@@ -71,11 +71,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}>
         <nav className="sticky top-0 z-50 bg-[#bc25a4] text-white">
+          {/* Desktop Navigation */}
           <div className="hidden lg:block">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-20">
                 <div className="flex-shrink-0 ml-8">
-                  <Link href="/">
+                  <Link href="/" passHref>
                     <a className="text-2xl font-bold text-white">Království Zdraví</a>
                   </Link>
                 </div>
@@ -141,7 +142,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     </div>
                   ))}
                 </div>
-
                 <div className="flex items-center space-x-4 mr-8">
                   <button className="hover:text-yellow-400">
                     <Search className="w-5 h-5" />
@@ -152,6 +152,57 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div className="lg:hidden">
+            <div className="flex items-center justify-between px-4 h-16 bg-[#bc25a4]">
+              <button onClick={() => setIsOpen(!isOpen)} className="text-white">
+                <div className="w-6 h-6 flex flex-col justify-center space-y-1.5">
+                  <span className={`block h-0.5 w-6 bg-yellow-400 transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                  <span className={`block h-0.5 w-6 bg-yellow-400 ${isOpen ? 'opacity-0' : ''}`}></span>
+                  <span className={`block h-0.5 w-6 bg-yellow-400 transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                </div>
+              </button>
+
+              <div className="flex-1 text-center">
+                <Link href="/" passHref>
+                  <a className="text-2xl font-bold text-white">Království Zdraví</a>
+                </Link>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <Search className="w-5 h-5 text-yellow-400" />
+                <ShoppingCart className="w-5 h-5 text-yellow-400" />
+              </div>
+            </div>
+
+            {isOpen && (
+              <div className="bg-[#bc25a4] text-white py-4 space-y-4">
+                {navLinks.map((link, index) => (
+                  <div key={index} className="px-4">
+                    <button onClick={() => setActiveDropdown(activeDropdown === index ? null : index)} className="flex items-center w-full text-left">
+                      <span className="text-sm uppercase">{link.title}</span>
+                      <ChevronDown className={`w-4 h-4 ml-auto transform ${activeDropdown === index ? 'rotate-180' : ''}`} />
+                    </button>
+                    {activeDropdown === index && (
+                      <div className="mt-2 space-y-2">
+                        <h3 className="text-yellow-400">Kategorie</h3>
+                        <ul className="space-y-1">
+                          {link.quickLinks.map((item, idx) => (
+                            <li key={idx}>
+                              <a href="#" className="block pl-4 text-white hover:text-yellow-400">
+                                {item}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </nav>
 
